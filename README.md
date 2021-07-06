@@ -2,46 +2,99 @@
 
 This assignment will allow you to play around with the `bcrypt` package
 
+In this assignment you will be expected to write a small authentication function. There is no need to build a server or link to a database; we will be recording everything to the file system. 
+
+> Difficulty level: Advanced beginner 🧙 🍵
+
+## Keywords
+
+`bcrypt`, `hash`, `salt`, `bcrypt.hash()`, `bcrypt.compare()`, `node.js`, `file system`, `fs.writeFile()`, `fs.readFile()`, `promises`
+
+## What you will be doing
+
+For this assignment you will have to:
+
+1. Familiarising yourself with the bcrypt library
+2. Using bcrypt to create a hash for a password (`register.js`), and saving that to a file
+3. Comparing a password with the hashed password (`login.js`) 
+
+This project assumes you've already had experience with:
+
+- node.js
+- node.js filesystem
+- promises
+
 ## Tasks
 
-## Task 1 - getting bcrypt
+To complete these tasks, you will be expected to write your solution in 2 files:
 
-1. Install the `bcrypt` npm package with `npm i bcrypt`
+1. `register.js`
+2. `login.js`
 
-2. Import `bcrypt` into your `server.js` file
+## Task 1 - Getting bcrypt
 
-## Task 2 - documentation
+1. Initialise `npm` with `npm init`
+
+2. Install the `bcrypt` npm package with `npm i bcrypt`
+
+3. Import `bcrypt` into your `register.js` file
+
+## Task 2 - Documentation
 
 Familiarise yourself with the [bcrypt documentation](https://www.npmjs.com/package/bcrypt)
 
 - How do you use it?
 - What things can you do with it?
 
-## Task 3 - writing a hashing helper function
+## Task 3 - Writing a hashing helper function (register.js)
 
-> `bcrypt.hash(myPlaintextPassword, saltRounds)`
+1. Open the file `register.js`
+   
+2. Import `bcrypt`
+   
+3. Write a function which takes a **string** as an argument, and uses `bcrypt.hash()` to hash the result and return the result. Use `10` as the number of salt rounds.
 
-Write a function which takes a string as an argument, and uses `bcrypt` to hash the result and return the result. Use `10` as the number of salt rounds.
+    > `bcrypt.hash(myPlaintextPassword, saltRounds)`
+   
+4. Run your function with the `userInput` variable, which you can populate from your terminal by adding an additional parameter, for example: `node register.js kittens` 
 
 > Note: This method returns a promise, so you might want to use `async / await` or use `.then()`
 
-Test your function by using `console.log()` to display the output
+5. Test your function by using `console.log()` to display the output
 
-## Task 4 - playing with salt
+## Task 4 - Playing with salt
 
 Play around with the `saltRounds`. Use small and large numbers.
 
- - How long does the program take to run?
- - What would an ideal `saltRounds` number be?
+- How long does the program take to run?
+- What would an ideal `saltRounds` number be?
 
-## Task 5 - writing a compare helper function
+## Task 5 - Saving the hashed output to file
 
-> `bcrypt.compare(myPlaintextPassword, hash)`
+We would like to store the hash we generated in the previous function into a file, so we can read it again
 
-Write a function which takes 2 strings as an argument.
+1. In the file `register.js`, import the node.js file system library
 
-The first string is your plain text password, and the second string is the hashed version of it (you can generate this with the helper function you wrote in Task 3)
+    > Hint: `const fs = require('fs').promises;` for the promise version of the library
 
-Test your function by using `console.log()` to display the output
+2. Use the `fs.writeFile()` method to write the hash to a file
 
-What happens if the password you use does not match the hashed version of that password?
+## Task 6 - Writing a compare helper function (login.js)
+
+1. Open the file `login.js
+
+2. Import `bcrypt` and the node js file system library (we will use it to read the file)
+
+3. Write a function which takes a **string** as an argument
+
+4. Use the `fs.readFile()` method to read the hash you stored in the file you created when you ran `register.js`
+   
+5. Use `bcrypt.compare()` to compare the `userInput` variable with the hash from the file you just read
+
+    > `bcrypt.compare(myPlaintextPassword, hash)`
+   
+6. `bcrypt.compare()` returns either `true` or `false`
+    - If `true`, display a message to the user stating that the passwords match
+    - If `false`, display a message to the user stating that the passwords do not match
+
+7. Test your code by running `node login.js {password}` - where `{password}` is the password you wish to test against the hash
